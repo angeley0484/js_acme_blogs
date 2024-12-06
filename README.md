@@ -19,3 +19,4 @@ When you are ready to submit your work, follow the instructions that are at the 
 ### Academic Honesty
 
 **DO NOT COPY** - Avoid plagiargism and adhere to the spirit of this [Academic Honesty Policy](https://www.freecodecamp.org/news/academic-honesty-policy/).
+[![Netlify Status](https://api.netlify.com/api/v1/badges/681e44d3-ceb0-4429-a594-d82de48e4a1c/deploy-status)](https://app.netlify.com/sites/new-angelescalera-app/deploys)
