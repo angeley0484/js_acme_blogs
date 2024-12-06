@@ -1,4 +1,4 @@
-                //1.-createElemWithText Function
+                /////////////////////////1.-createElemWithText Function
 function createElemWithText(elementType = "p", textContent = "", className= "") {
     // Create the HTML element
     const element = document.createElement(elementType);
@@ -55,7 +55,7 @@ testCreateSelectOptions();
 
 // Function to toggle the visibility of a section based on postId
 function toggleCommentSection(postId) {
-    if (!postId) return null; // Ensure postId is provided
+    if (!postId) return undefined; // Return undefined when postId is not provided
 
     // Select the section element with the corresponding data-post-id attribute
     const section = document.querySelector(`section[data-post-id="${postId}"]`);
@@ -63,7 +63,7 @@ function toggleCommentSection(postId) {
     // Check if the section exists
     if (!section) {
         console.warn(`Section with postId ${postId} does not exist.`);
-        return null;
+        return undefined; // Return undefined if the section doesn't exist
     }
 
     // Toggle the 'hide' class on the section
@@ -75,30 +75,27 @@ function toggleCommentSection(postId) {
 
 // Testing the function
 function testToggleCommentSection() {
-    // Create a test section
     const testSection = document.createElement("section");
-    testSection.dataset.postId = "123"; // Set the data-post-id attribute
-    testSection.className = "comments hide"; // Add initial classes
-    document.body.appendChild(testSection); // Append to the document for testing
+    testSection.dataset.postId = "123"; 
+    testSection.className = "comments hide"; 
+    document.body.appendChild(testSection); 
 
     console.log("Before toggling:", testSection.className);
-
-    // Call the function to toggle the 'hide' class
     const result = toggleCommentSection("123");
-
     console.log("After toggling:", testSection.className);
-
-    // Cleanup test section
     document.body.removeChild(testSection);
 }
 
 // Run the test function
 testToggleCommentSection();
 
+
+
+
               //4.-toggleCommentButton
 // Function to toggle the text of a button based on its current state
 function toggleCommentButton(postId) {
-    if (!postId) return null; // Ensure postId is provided
+    if (!postId) return undefined; // Ensure postId is provided and return undefined if not
 
     // Select the button element with the corresponding data-post-id attribute
     const button = document.querySelector(`button[data-post-id="${postId}"]`);
@@ -106,7 +103,7 @@ function toggleCommentButton(postId) {
     // Check if the button exists
     if (!button) {
         console.warn(`Button with postId ${postId} does not exist.`);
-        return null;
+        return undefined; // Return undefined if the button doesn't exist
     }
 
     // Toggle the button textContent using a ternary statement
@@ -149,7 +146,7 @@ testToggleCommentButton();
 function deleteChildElements(parentElement) {
     if (!parentElement || !(parentElement instanceof HTMLElement)) {
         console.error("Invalid parent element provided.");
-        return null; // Return null if the input is invalid
+        return undefined; // Return undefined instead of null when input is invalid
     }
 
     // Initialize the child variable as the last child of the parent
@@ -194,6 +191,7 @@ function testDeleteChildElements() {
 testDeleteChildElements();
 
 
+
                   //6.- addButtonListeners
 
 // Dummy toggleComments function to test the listener
@@ -214,7 +212,7 @@ function addButtonListeners() {
             // Get the postId from the button's dataset
             const postId = button.dataset.postId;
 
-            // If a postId exists, add a click event listener
+            // Only add a click event listener if a postId exists
             if (postId) {
                 button.addEventListener("click", function (event) {
                     // Call toggleComments with the event and postId as parameters
@@ -237,9 +235,14 @@ function testAddButtonListeners() {
     for (let i = 1; i <= 3; i++) {
         const button = document.createElement("button");
         button.textContent = `Button ${i}`;
-        button.dataset.postId = i.toString();
+        button.dataset.postId = i.toString(); // Add postId for buttons
         testMain.appendChild(button);
     }
+
+    // Add a button without postId to test the skip functionality
+    const buttonWithoutPostId = document.createElement("button");
+    buttonWithoutPostId.textContent = "Button without postId";
+    testMain.appendChild(buttonWithoutPostId);
 
     // Append the testMain to the body for testing
     document.body.appendChild(testMain);
@@ -258,6 +261,7 @@ function testAddButtonListeners() {
 
 // Run the test function
 testAddButtonListeners();
+
 
 
          //7.- removeButtonListeners
@@ -463,7 +467,7 @@ async function getUsers() {
 }
 
 
-        //11.-getUserPosts
+        //11.-getUserPosts function
 /**
  * Fetches posts data for a specific user from the JSONPlaceholder API.
  * @param {number} userId - The ID of the user to fetch posts for.
@@ -473,7 +477,7 @@ async function getUserPosts(userId) {
     try {
         // Make sure the userId is provided
         if (!userId) {
-            throw new Error('User ID is required');
+            return undefined; // Return undefined if no userId is provided
         }
 
         // Fetch posts for the given userId
@@ -490,11 +494,11 @@ async function getUserPosts(userId) {
     } catch (error) {
         // Log the error to the console if any occurs
         console.error('Error fetching posts:', error);
-        return []; // Return an empty array in case of an error
+        return undefined; // Return undefined in case of an error
     }
 }
 
-          //12.- getUser
+          //12.- getUser function
 /**
  * Fetches data for a specific user from the JSONPlaceholder API.
  * @param {number} userId - The ID of the user to fetch data for.
@@ -526,7 +530,7 @@ async function getUser(userId) {
 }
 
 
-          //13.- getPostComments
+          //13.- getPostComments function
 /**
  * Fetches comments for a specific post from the JSONPlaceholder API.
  * @param {number} postId - The ID of the post to fetch comments for.
@@ -536,7 +540,7 @@ async function getPostComments(postId) {
     try {
         // Ensure the postId is provided
         if (!postId) {
-            throw new Error('Post ID is required');
+            return undefined; // Return undefined if no postId is provided
         }
 
         // Fetch the comments for the specific postId
@@ -551,14 +555,15 @@ async function getPostComments(postId) {
         const commentsData = await response.json();
         return commentsData;
     } catch (error) {
-        // Log the error and return an empty array in case of failure
+        // Log the error and return undefined in case of failure
         console.error('Error fetching comments:', error);
-        return [];  // Return an empty array in case of an error
+        return undefined; // Return undefined in case of an error
     }
 }
 
 
-              //14.- displayComments
+
+              //14.- displayComments function
 
 /**
  * Displays comments for a specific post by fetching them and appending them to a section element.
@@ -567,6 +572,11 @@ async function getPostComments(postId) {
  */
 async function displayComments(postId) {
     try {
+        // Check if postId is provided, if not return undefined
+        if (!postId) {
+            return undefined; // Return undefined if no postId is provided
+        }
+
         // Step d: Create a section element
         const section = document.createElement('section');
         
@@ -590,11 +600,13 @@ async function displayComments(postId) {
     } catch (error) {
         // Handle any errors that may occur during fetching or appending comments
         console.error('Error displaying comments:', error);
+        return undefined; // Return undefined in case of an error
     }
 }
 
 
-            //15.- createPosts
+
+            //15.- createPosts function
 /**
  * Creates posts and associated elements, including author information and comments.
  * @param {Array} posts - The posts data to be used for creating post elements.
@@ -625,8 +637,8 @@ async function createPosts(posts) {
             // Step l: Create another p element with the author name and company name
             const authorInfo = createElemWithText('p', `Author: ${author.name} with ${author.company.name}`);
             
-            // Step m: Create another p element with the author's company catchphrase
-            const companyCatchphrase = createElemWithText('p', `"${author.company.catchPhrase}"`);
+            // Step m: Create another p element with the author's company catchphrase (without quotes)
+            const companyCatchphrase = createElemWithText('p', author.company.catchPhrase);
             
             // Step n: Create a button element with the text 'Show Comments'
             const button = document.createElement('button');
@@ -659,7 +671,8 @@ async function createPosts(posts) {
     }
 }
 
-          //16.- displayPosts
+
+          //16.- displayPosts function
 /**
  * Displays posts on the page.
  * @param {Array} posts - The posts data to be used for creating post elements.
@@ -673,7 +686,12 @@ async function displayPosts(posts) {
         // Step e: Create the element based on the posts data
         const element = posts && posts.length > 0 
             ? await createPosts(posts) // If posts exist, create posts
-            : createElemWithText('p', 'No posts available.'); // Default message if no posts
+            : createElemWithText('p', 'Select an Employee to display their posts.'); // Default message if no posts
+
+        // Add the default-text class if no posts are provided
+        if (!posts || posts.length === 0) {
+            element.classList.add('default-text');
+        }
 
         // Step f: Append the created element (posts or default message) to the main element
         mainElement.appendChild(element);
@@ -686,14 +704,21 @@ async function displayPosts(posts) {
     }
 }
 
-/////////////// 17.- toggleComments
+
+/////////////// 17.- toggleComments function
 /**
  * Toggles the visibility of the comments section and button text.
  * @param {Event} event - The click event triggered by the button.
  * @param {number} postId - The ID of the post for which to toggle the comments.
- * @returns {Array} - An array containing the section element and the button element.
+ * @returns {Array|undefined} - An array containing the section element and the button element, or undefined if parameters are missing.
  */
 function toggleComments(event, postId) {
+    // Check if event and postId are provided
+    if (!event || !postId) {
+        console.error('Both event and postId are required.');
+        return undefined;  // Return undefined if parameters are missing
+    }
+
     // Step c: Set event.target.listener = true for testing purposes
     event.target.listener = true;
 
@@ -708,14 +733,20 @@ function toggleComments(event, postId) {
 }
 
 
-////////////////////   18.-refreshPosts
+////////////////////   18.-refreshPosts function
 /**
  * Refreshes the posts displayed on the page by removing old buttons, clearing existing content,
  * displaying new posts, and re-adding event listeners to buttons.
  * @param {Array} posts - The JSON data representing the posts to display.
- * @returns {Array} - An array containing the results from the sequence of function calls.
+ * @returns {Array|undefined} - An array containing the results from the sequence of function calls, or undefined if no posts data is provided.
  */
 async function refreshPosts(posts) {
+    // Step: Check if posts data is provided
+    if (!posts || posts.length === 0) {
+        console.error('No posts data provided.');
+        return undefined;  // Return undefined if no posts are provided
+    }
+
     // Step d: Call removeButtonListeners to remove any existing button event listeners
     const removeButtons = removeButtonListeners();
 
@@ -733,13 +764,20 @@ async function refreshPosts(posts) {
     return [removeButtons, main, fragment, addButtons];
 }
 
-//////////////////   19.- selectMenuChangeEventHandler
+
+//////////////////   19.- selectMenuChangeEventHandler function
 /**
  * Handles the change event on the select menu to fetch and display posts for a selected user.
  * @param {Event} event - The change event triggered by selecting a new user in the select menu.
- * @returns {Array} - An array containing the userId, posts, and the result from refreshPosts.
+ * @returns {Array|undefined} - An array containing the userId, posts, and the result from refreshPosts, or undefined if no event is provided.
  */
 async function selectMenuChangeEventHandler(event) {
+    // Step: Check if event is provided
+    if (!event) {
+        console.error("No event parameter provided.");
+        return undefined;  // Return undefined if no event is provided
+    }
+
     // Step d: Disable the select menu while data is being fetched
     const selectMenu = document.querySelector('#selectMenu');
     selectMenu.disabled = true;
@@ -769,6 +807,7 @@ async function selectMenuChangeEventHandler(event) {
         return [userId, [], []];
     }
 }
+
 
 
 ////////////////////   20.- initPage
